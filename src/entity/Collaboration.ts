@@ -1,0 +1,22 @@
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+
+@Entity()
+export class Collaboration {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column("nvarchar")
+  name: string;
+
+  @Column("nvarchar")
+  thumb: string;
+
+  @Column('nvarchar')
+  link: string
+
+  @Column("int")
+  is_show: number;
+
+  @Column("timestamp")
+  created_at: Date;
+}
