@@ -1,19 +1,34 @@
-import { Entity, Column, PrimaryColumn } from "typeorm";
+import {
+  Entity,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToOne,
+  JoinColumn,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+import { User } from "./User";
+import { Song } from "./Song";
 
 @Entity()
 export class Lyrics {
-  @PrimaryColumn()
-  song_id: number;
+  @PrimaryGeneratedColumn()
+  id: number
+
+  @OneToOne(() => Song, song => song.id)
+  @JoinColumn()
+  song: Song;
 
   @Column("text")
   lyrics: string;
 
-  @Column("integer")
-  user_id: string;
+  @OneToOne(() => User, user => user.id)
+  @JoinColumn()
+  user: User;
 
-  @Column("timestamp")
+  @CreateDateColumn()
   created_at: Date;
 
-  @Column("timestamp")
+  @UpdateDateColumn()
   updated_at: Date;
 }

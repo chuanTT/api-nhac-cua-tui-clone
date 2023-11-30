@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class Song {
@@ -26,9 +26,9 @@ export class Song {
   @Column("int")
   type_id: number;
 
-  @Column("timestamp")
+  @CreateDateColumn()
   created_at: Date;
 
-  @Column("timestamp")
+  @UpdateDateColumn()
   updated_at: Date;
 }

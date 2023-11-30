@@ -1,4 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn, ManyToMany, JoinTable } from "typeorm";
+import { User } from "./User";
+import { Song } from "./Song";
 
 @Entity()
 export class Playlist {
@@ -14,8 +16,23 @@ export class Playlist {
   @Column('nvarchar')
   thumb: string
 
-  @Column('int')
-  user_id: string
+  @OneToOne(() => User, user => user.id)
+  @JoinColumn()
+  user: User;
+
+  @ManyToMany(() => Song, (Song) => Song.id, { eager: true })
+  @JoinTable({
+    name: "playlist_song",
+    joinColumn: {
+      name: "song_id",
+      referencedColumnName: "id",
+    },
+    inverseJoinColumn: {
+      name: 'playlist_id',
+      referencedColumnName: 'id',
+    },
+  })
+  songs: Song[];
 
   @Column('int')
   is_review: number
@@ -26,9 +43,9 @@ export class Playlist {
   @Column('text')
   description: string
 
-  @Column("timestamp")
+  @CreateDateColumn()
   created_at: Date;
 
-  @Column("timestamp")
+  @UpdateDateColumn()
   updated_at: Date;
 }

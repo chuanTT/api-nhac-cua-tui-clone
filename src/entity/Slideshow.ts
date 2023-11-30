@@ -1,4 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany, OneToOne, JoinColumn } from "typeorm";
+import { User } from "./User";
+import { Type } from "./Type";
 
 @Entity()
 export class Slideshow {
@@ -14,11 +16,12 @@ export class Slideshow {
   @Column('int')
   owner_id: string
 
-  @Column('int')
-  user_id: string
+  @OneToMany(() => User, user => user.id)
+  user: User
 
-  @Column('int')
-  is_type: number
+  @OneToOne(() => Type)
+  @JoinColumn()
+  type: Type
 
   @Column('int')
   is_show: number
@@ -29,9 +32,9 @@ export class Slideshow {
   @Column("datetime")
   end_at: Date;
 
-  @Column("timestamp")
+  @CreateDateColumn()
   created_at: Date;
 
-  @Column("timestamp")
+  @UpdateDateColumn()
   updated_at: Date;
 }

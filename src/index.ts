@@ -1,6 +1,9 @@
 import { config } from "dotenv";
 config();
 import { AppDataSource } from "./data-source";
-import { User } from "./entity/User";
+import app from "./server"
+const port = process.env.PORT || 3002;
 
-AppDataSource.initialize()
+AppDataSource.initialize().then(() => {
+    app.listen(port, () => console.log(`server listen ${port}`))
+}).catch((error) => console.log(error))

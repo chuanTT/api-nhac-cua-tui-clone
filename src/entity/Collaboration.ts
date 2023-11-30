@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from "typeorm";
 
 @Entity()
 export class Collaboration {
@@ -17,6 +17,6 @@ export class Collaboration {
   @Column("int")
   is_show: number;
 
-  @Column("timestamp")
+  @CreateDateColumn()
   created_at: Date;
 }

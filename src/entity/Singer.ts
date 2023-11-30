@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from "typeorm";
+import { Country } from "./Country";
 
 @Entity()
 export class Singer {
@@ -11,8 +12,9 @@ export class Singer {
   @Column('int')
   gender: number;
 
-  @Column('int')
-  country_id: number
+  @ManyToOne(() => Country, country => country.id)
+  @JoinColumn()
+  country: Country
 
   @Column('nvarchar')
   avatar: string
@@ -26,9 +28,9 @@ export class Singer {
   @Column('nvarchar')
   cover_image: string
 
-  @Column("timestamp")
+  @CreateDateColumn()
   created_at: Date;
 
-  @Column("timestamp")
+  @UpdateDateColumn()
   updated_at: Date;
 }

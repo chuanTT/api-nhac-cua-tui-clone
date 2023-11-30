@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToMany, JoinTable } from "typeorm";
+import { Playlist } from "./Playlist";
 
 @Entity()
 export class Theme {
@@ -17,9 +18,23 @@ export class Theme {
   @Column("text")
   description: string;
 
-  @Column("timestamp")
+  @CreateDateColumn()
   created_at: Date;
 
-  @Column("timestamp")
+  @UpdateDateColumn()
   updated_at: Date;
+
+  @ManyToMany(() => Playlist, (Playlist) => Playlist.id, { eager: true })
+  @JoinTable({
+    name: "theme_playlist",
+    joinColumn: {
+      name: "song_id",
+      referencedColumnName: "id",
+    },
+    inverseJoinColumn: {
+      name: 'theme_id',
+      referencedColumnName: 'id',
+    },
+  })
+  songs: Playlist[];
 }

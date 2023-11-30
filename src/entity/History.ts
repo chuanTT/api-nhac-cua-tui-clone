@@ -1,22 +1,26 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn } from "typeorm";
+import { User } from "./User";
+import { Type } from "./Type";
 
 @Entity()
 export class History {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column("int")
-  user_id: number;
+  @OneToOne(() => User, user => user.id)
+  @JoinColumn()
+  user: User;
 
   @Column('int')
   owner_id: number
 
-  @Column('int')
-  type_id: number
+  @OneToOne(() => Type)
+  @JoinColumn()
+  type: Type
 
-  @Column("timestamp")
+  @CreateDateColumn()
   created_at: Date;
 
-  @Column("timestamp")
+  @UpdateDateColumn()
   updated_at: Date;
 }
