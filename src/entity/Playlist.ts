@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn, ManyToMany, JoinTable } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn, ManyToMany, JoinTable, ManyToOne } from "typeorm";
 import { User } from "./User";
 import { Song } from "./Song";
 
@@ -16,7 +16,7 @@ export class Playlist {
   @Column('nvarchar')
   thumb: string
 
-  @OneToOne(() => User, user => user.id)
+  @ManyToOne(() => User, user => user.id)
   @JoinColumn()
   user: User;
 

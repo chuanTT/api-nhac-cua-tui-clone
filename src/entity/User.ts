@@ -8,6 +8,9 @@ export class User {
   @Column("nvarchar", { unique: true })
   user_name: string;
 
+  @Column("nvarchar", { unique: true })
+  email: string;
+
   @Column("nvarchar", { length: 50 })
   full_name: string;
 

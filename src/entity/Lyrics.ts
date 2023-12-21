@@ -6,6 +6,7 @@ import {
   OneToOne,
   JoinColumn,
   PrimaryGeneratedColumn,
+  ManyToOne,
 } from "typeorm";
 import { User } from "./User";
 import { Song } from "./Song";
@@ -22,7 +23,7 @@ export class Lyrics {
   @Column("text")
   lyrics: string;
 
-  @OneToOne(() => User, user => user.id)
+  @ManyToOne(() => User, user => user.id)
   @JoinColumn()
   user: User;
 

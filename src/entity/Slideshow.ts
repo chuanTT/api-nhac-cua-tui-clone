@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany, OneToOne, JoinColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany, OneToOne, JoinColumn, ManyToOne } from "typeorm";
 import { User } from "./User";
 import { Type } from "./Type";
 
@@ -19,7 +19,7 @@ export class Slideshow {
   @OneToMany(() => User, user => user.id)
   user: User
 
-  @OneToOne(() => Type)
+  @ManyToOne(() => Type)
   @JoinColumn()
   type: Type
 

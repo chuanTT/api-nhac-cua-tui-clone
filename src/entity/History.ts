@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn, ManyToOne } from "typeorm";
 import { User } from "./User";
 import { Type } from "./Type";
 
@@ -7,14 +7,14 @@ export class History {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToOne(() => User, user => user.id)
+  @ManyToOne(() => User, user => user.id)
   @JoinColumn()
   user: User;
 
   @Column('int')
   owner_id: number
 
-  @OneToOne(() => Type)
+  @ManyToOne(() => Type)
   @JoinColumn()
   type: Type
 

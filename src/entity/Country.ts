@@ -6,7 +6,7 @@ export class Country {
   id: number;
 
   @Column("nvarchar", {
-    length: 40,
+    length: 100,
   })
   name: string;
 
