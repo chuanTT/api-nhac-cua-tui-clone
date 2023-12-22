@@ -9,10 +9,10 @@ export class Tags {
   @Column("nvarchar")
   name: string;
 
-  @CreateDateColumn()
+  @Column('timestamp')
   created_at: Date;
 
-  @UpdateDateColumn()
+  @Column('timestamp')
   updated_at: Date;
 
   @ManyToMany(() => Option, (Option) => Option.id, { eager: true })

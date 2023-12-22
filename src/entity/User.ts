@@ -44,6 +44,6 @@ export class User {
   @Column("nvarchar", { length: 100 })
   password: string;
 
-  @CreateDateColumn()
+  @Column('timestamp')
   created_at: Date;
 }

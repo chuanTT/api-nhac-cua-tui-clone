@@ -27,9 +27,9 @@ export class Lyrics {
   @JoinColumn()
   user: User;
 
-  @CreateDateColumn()
+  @Column('timestamp')
   created_at: Date;
 
-  @UpdateDateColumn()
+  @Column('timestamp')
   updated_at: Date;
 }

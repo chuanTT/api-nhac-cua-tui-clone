@@ -26,9 +26,9 @@ export class Song {
   @Column("int")
   type_id: number;
 
-  @CreateDateColumn()
+  @Column('timestamp')
   created_at: Date;
 
-  @UpdateDateColumn()
+  @Column('timestamp')
   updated_at: Date;
 }

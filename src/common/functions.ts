@@ -11,3 +11,11 @@ export function chunkArray(myArray: any[], chunk_size: number){
 
     return tempArray;
 }
+
+export const isEmptyObj = (obj: any) => {
+    let emty = true
+    if (obj) {
+      emty = Object.keys(obj).length === 0 && obj.constructor === Object
+    }
+    return emty
+  }

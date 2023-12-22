@@ -17,6 +17,6 @@ export class Collaboration {
   @Column("int")
   is_show: number;
 
-  @CreateDateColumn()
+  @Column('timestamp')
   created_at: Date;
 }

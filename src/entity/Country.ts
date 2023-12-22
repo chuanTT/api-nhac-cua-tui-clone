@@ -10,9 +10,9 @@ export class Country {
   })
   name: string;
 
-  @CreateDateColumn()
+  @Column('timestamp')
   created_at: Date;
 
-  @UpdateDateColumn()
+  @Column('timestamp')
   updated_at: Date;
 }

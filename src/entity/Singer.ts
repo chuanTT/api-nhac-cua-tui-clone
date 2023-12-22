@@ -28,9 +28,9 @@ export class Singer {
   @Column('nvarchar')
   cover_image: string
 
-  @CreateDateColumn()
+  @Column('timestamp')
   created_at: Date;
 
-  @UpdateDateColumn()
+  @Column('timestamp')
   updated_at: Date;
 }

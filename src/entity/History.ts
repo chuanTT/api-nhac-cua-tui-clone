@@ -18,9 +18,9 @@ export class History {
   @JoinColumn()
   type: Type
 
-  @CreateDateColumn()
+  @Column('timestamp')
   created_at: Date;
 
-  @UpdateDateColumn()
+  @Column('timestamp')
   updated_at: Date;
 }

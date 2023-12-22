@@ -32,9 +32,9 @@ export class Ingredient {
   @Column("datetime")
   end_at: Date;
 
-  @CreateDateColumn()
+  @Column('timestamp')
   created_at: Date;
 
-  @UpdateDateColumn()
+  @Column('timestamp')
   updated_at: Date;
 }

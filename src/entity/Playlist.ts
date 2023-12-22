@@ -43,9 +43,9 @@ export class Playlist {
   @Column('text')
   description: string
 
-  @CreateDateColumn()
+  @Column('timestamp')
   created_at: Date;
 
-  @UpdateDateColumn()
+  @Column('timestamp')
   updated_at: Date;
 }

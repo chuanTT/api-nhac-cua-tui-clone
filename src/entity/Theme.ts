@@ -18,10 +18,10 @@ export class Theme {
   @Column("text")
   description: string;
 
-  @CreateDateColumn()
+  @Column('timestamp')
   created_at: Date;
 
-  @UpdateDateColumn()
+  @Column('timestamp')
   updated_at: Date;
 
   @ManyToMany(() => Playlist, (Playlist) => Playlist.id, { eager: true })
