@@ -1,5 +1,5 @@
 import { registerRequest } from "../middleware/auth.middleware";
-import validateRequest from "@/middleware/validateRequest";
+import validateRequest from "../middleware/validateRequest";
 import * as express from "express";
 const router = express.Router();
 

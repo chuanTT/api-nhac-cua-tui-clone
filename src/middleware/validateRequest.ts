@@ -1,47 +1,56 @@
-import { ConfigError } from '@/common/validate'
-import { unlinkFile } from '@/common/uploadFile'
-import { isEmptyObj } from '@/common/functions'
+import { UnprocessableEntity } from "http-errors";
+import { NextFunction, Response } from "express";
+
+import { ConfigError } from "../common/validate";
+import { unlinkFile } from "../common/uploadFile";
+import { isEmptyObj } from "../common/functions";
+import { configValidateType } from "../types";
 
 const validateRequest =
-  (LoadConfig: configValidateType) => (req: any, _res: any, next: () => void) => {
-    let object = Object.assign({}, req?.body)
-    object = { ...object, ...req?.params, ...req?.query }
-    let arrErorr = {}
+  (LoadConfig: configValidateType) =>
+  (req: any, _res: Response, next: NextFunction) => {
+    let arrErorr = {};
 
     for (const key in LoadConfig) {
-      // eslint-disable-next-line no-prototype-builtins
-      if (object.hasOwnProperty(key)) {
-        const isError = ConfigError(key, object[key], LoadConfig[key], object)
-        if (isError[key]) {
-          arrErorr = { ...arrErorr, ...isError }
+      const object = Object.assign({}, req?.[key]);
+      for (const keyValue in LoadConfig[key]) {
+        // eslint-disable-next-line no-prototype-builtins
+        if (object.hasOwnProperty(keyValue)) {
+          const isError = ConfigError(
+            keyValue,
+            object[keyValue],
+            LoadConfig[key][keyValue],
+            object
+          );
+          if (isError[keyValue]) {
+            arrErorr = { ...arrErorr, ...isError };
+          }
+        } else {
+          !LoadConfig[key][keyValue]?.isDisableKey &&
+            (arrErorr = {
+              ...arrErorr,
+              [keyValue]: `Cần phải truyền lên ${keyValue}`,
+            });
         }
-      } else {
-        !LoadConfig[key]?.isDisableKey &&
-          (arrErorr = { ...arrErorr, [key]: `Cần phải truyền lên ${key}` })
       }
     }
 
     if (isEmptyObj(arrErorr)) {
-      next()
+      next();
     } else {
       if (req?.file?.filename) {
-        unlinkFile(req?.file?.path)
+        unlinkFile(req?.file?.path);
       }
 
       if (req?.files) {
         if (Array.isArray(req?.files)) {
           req?.files?.forEach((file: any) => {
-            unlinkFile(file?.path)
-          })
+            unlinkFile(file?.path);
+          });
         }
       }
-
-      return req.errorFuc({
-        msg: 'Resquest error',
-        code: 422,
-        data: arrErorr
-      })
+      next(UnprocessableEntity());
     }
-  }
+  };
 
-export default validateRequest
+export default validateRequest;

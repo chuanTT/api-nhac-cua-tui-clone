@@ -1,3 +1,5 @@
+import { configValidateValueType } from "../types"
+
 // validate rule
 const isRequired = (value: any) => {
     let isError = true

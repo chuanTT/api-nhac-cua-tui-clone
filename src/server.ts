@@ -26,7 +26,8 @@ const errorHandler: express.ErrorRequestHandler = (err, req, res, next) => {
   const code = err.status || 500
   res.status(code).json({
     status: code,
-    message: err.message
+    message: err.message || "Internal Server Error",
+    errors: err?.errors || null
   })
 };
 

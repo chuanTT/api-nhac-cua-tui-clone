@@ -1,8 +1,13 @@
 import { isRequired } from "../common/validate";
+import { configValidateType } from "../types";
 
 export const registerRequest: configValidateType = {
-  email: {
+  body: {
+    email: {
       rules: [isRequired],
-      msg: {}
-  },
+      msg: {
+        isRequired: "ss"
+      }
+    },
+  }
 };

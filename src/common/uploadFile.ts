@@ -1,6 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import * as multer from 'multer'
+import { uploadFileType } from '../types'
 
 const storageFile = (folder = 'temp') => {
   const storage = multer.diskStorage({
