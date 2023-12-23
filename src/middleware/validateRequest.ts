@@ -1,15 +1,15 @@
 import { UnprocessableEntity } from "http-errors";
-import { NextFunction, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 
 import { ConfigError } from "../common/validate";
 import { unlinkFile } from "../common/uploadFile";
-import { isEmptyObj } from "../common/functions";
+import { customError, isEmptyObj } from "../common/functions";
 import { configValidateType } from "../types";
 
 const validateRequest =
   (LoadConfig: configValidateType) =>
-  (req: any, _res: Response, next: NextFunction) => {
-    let arrErorr = {};
+  (req: Request, _res: Response, next: NextFunction) => {
+    let objErorr = {};
 
     for (const key in LoadConfig) {
       const object = Object.assign({}, req?.[key]);
@@ -23,33 +23,36 @@ const validateRequest =
             object
           );
           if (isError[keyValue]) {
-            arrErorr = { ...arrErorr, ...isError };
+            objErorr = { ...objErorr, ...isError };
           }
         } else {
           !LoadConfig[key][keyValue]?.isDisableKey &&
-            (arrErorr = {
-              ...arrErorr,
+            (objErorr = {
+              ...objErorr,
               [keyValue]: `Cần phải truyền lên ${keyValue}`,
             });
         }
       }
     }
 
-    if (isEmptyObj(arrErorr)) {
+    if (isEmptyObj(objErorr)) {
       next();
     } else {
       if (req?.file?.filename) {
         unlinkFile(req?.file?.path);
-      }
-
-      if (req?.files) {
+      } else {
         if (Array.isArray(req?.files)) {
           req?.files?.forEach((file: any) => {
             unlinkFile(file?.path);
           });
         }
       }
-      next(UnprocessableEntity());
+
+      next(
+        customError(UnprocessableEntity(), {
+          errors: objErorr,
+        })
+      );
     }
   };
 
