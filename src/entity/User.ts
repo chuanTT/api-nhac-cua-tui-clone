@@ -1,4 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from "typeorm";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  BeforeInsert,
+} from "typeorm";
+import { bcryptPass } from "../common/bcryptFuc";
 
 @Entity()
 export class User {
@@ -11,39 +18,44 @@ export class User {
   @Column("nvarchar", { unique: true })
   email: string;
 
-  @Column("nvarchar", { length: 50 })
+  @Column("nvarchar", { length: 50, nullable: true })
   full_name: string;
 
-  @Column("datetime")
+  @Column("datetime", { nullable: true })
   birthday: Date;
 
-  @Column('int')
+  @Column("int", { nullable: true })
   gender: number;
 
-  @Column("nvarchar", { length: 20 })
+  @Column("nvarchar", { length: 20, nullable: true })
   phone: string;
 
-  @Column("nvarchar")
+  @Column("nvarchar", { nullable: true })
   address: string;
 
-  @Column("nvarchar")
+  @Column("nvarchar", { nullable: true })
   introduce: string;
 
-  @Column("nvarchar")
+  @Column("nvarchar", { default: "0" })
   view_profile: string;
 
-  @Column("nvarchar")
+  @Column("nvarchar", { default: "0" })
   view_playlist: string;
 
-  @Column("nvarchar")
+  @Column("nvarchar", { nullable: true })
   avatar: string;
 
-  @Column("nvarchar")
+  @Column("nvarchar", { nullable: true })
   token: string;
 
   @Column("nvarchar", { length: 100 })
   password: string;
 
-  @Column('timestamp')
+  @Column("timestamp", { default: () => "CURRENT_TIMESTAMP" })
   created_at: Date;
+
+  @BeforeInsert()
+  setId() {
+    this.password = bcryptPass(this.password)
+  }
 }

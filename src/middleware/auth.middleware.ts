@@ -7,22 +7,22 @@ export const registerRequest: configValidateType = {
       rules: [isRequired, isEmail],
       msg: {
         isRequired: "Email không được để trống",
-        isEmail: "Email không đúng định dạng"
-      }
+        isEmail: "Email không đúng định dạng",
+      },
     },
 
     user_name: {
       rules: [isRequired],
       msg: {
-        isRequired: "Tài khoản không được để trống"
-      }
+        isRequired: "Tài khoản không được để trống",
+      },
     },
 
     password: {
       rules: [isRequired],
       msg: {
-        isRequired: "Mật khẩu không được để trống"
-      }
+        isRequired: "Mật khẩu không được để trống",
+      },
     },
 
     confirm_password: {
@@ -30,8 +30,35 @@ export const registerRequest: configValidateType = {
       dependent: "password",
       msg: {
         isRequired: "Mật khẩu không được để trống",
-        isDependent: "Mật khẩu không khớp"
-      }
-    }
-  }
+        isDependent: "Mật khẩu không khớp",
+      },
+    },
+  },
+};
+
+export const loginRequest: configValidateType = {
+  body: {
+    user_name: {
+      rules: [isRequired],
+      msg: {
+        isRequired: "Tài khoản không được để trống",
+      },
+    },
+
+    password: {
+      rules: [isRequired],
+      msg: {
+        isRequired: "Mật khẩu không được để trống",
+      },
+    },
+
+    confirm_password: {
+      rules: [isRequired, isDependent],
+      dependent: "password",
+      msg: {
+        isRequired: "Mật khẩu không được để trống",
+        isDependent: "Mật khẩu không khớp",
+      },
+    },
+  },
 };
