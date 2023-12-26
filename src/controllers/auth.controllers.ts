@@ -1,10 +1,12 @@
 import { NextFunction, Request, Response } from "express";
-import { BadRequest } from "http-errors";
+import { BadRequest, UnprocessableEntity } from "http-errors";
 
 import { User } from "../entity/User";
 import { AppDataSource } from "../data-source";
-import { createToken } from "../middleware/verifyToken.middleware";
-import { UserRepo } from "../service/users.service";
+import { UserRepo, createTokenUser } from "../service/users.service";
+import { newRequest } from "../types";
+import { bcryptCompare } from "../common/bcryptFuc";
+import { statusObj } from "../config/statusMsg";
 
 export const registerController = async (
   req: Request,
@@ -21,18 +23,8 @@ export const registerController = async (
     const result = await AppDataSource.manager.save(user);
 
     if (result?.id) {
-      const token = createToken({ id: result.id });
-      user.token = token;
-      await UserRepo.update(
-        {
-          id: result.id,
-        },
-        {
-          token,
-        }
-      );
-
-      return res.status(201).json({ token });
+      const token = await createTokenUser({ id: result.id });
+      return res.status(201).json(token);
     }
   } catch {
     next(BadRequest());
@@ -40,16 +32,47 @@ export const registerController = async (
 };
 
 export const loginController = async (
-  req: Request,
+  req: newRequest<User>,
   res: Response,
   next: NextFunction
 ) => {
-    const { user_name, email, password } = req.body;
+  const { existsData } = req;
+  const { password } = req.body;
+  const hashPwd = bcryptCompare(password, existsData?.password);
+  if (hashPwd) {
+    const token = await createTokenUser({ id: existsData.id });
+    return res.status(200).json(token);
+  }
+  next(UnprocessableEntity(statusObj.user.loginError));
+};
 
-    try {
+export const verifyTokenController = async (
+  req: newRequest<User>,
+  res: Response
+) => {
+  const { existsData } = req;
+  return res.status(200).json(existsData);
+};
 
-    } catch {
+export const logoutController = async (
+  req: newRequest<User>,
+  res: Response,
+  next: NextFunction
+) => {
+  const { existsData } = req;
 
-    }
+  if (existsData?.id) {
+    await UserRepo.update(
+      {
+        id: existsData?.id,
+      },
+      {
+        token: null,
+      }
+    );
 
+    return res.status(200).json()
+  }
+
+  next(BadRequest());
 };

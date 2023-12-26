@@ -15,7 +15,7 @@ export class User {
   @Column("nvarchar", { unique: true })
   user_name: string;
 
-  @Column("nvarchar", { unique: true })
+  @Column("nvarchar")
   email: string;
 
   @Column("nvarchar", { length: 50, nullable: true })
@@ -55,7 +55,7 @@ export class User {
   created_at: Date;
 
   @BeforeInsert()
-  setId() {
+  hashPwd() {
     this.password = bcryptPass(this.password)
   }
 }

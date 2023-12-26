@@ -1,3 +1,5 @@
+import { Request } from "express";
+
 export type uploadFileType = {
   name: string;
   isMutile?: boolean;
@@ -22,4 +24,8 @@ export type configValidateType = {
   [P in variableNode]?: {
     [key: string]: configValidateValueType;
   };
+};
+
+export type newRequest<T> = Request & {
+  existsData: T;
 };
